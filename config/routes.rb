@@ -5,17 +5,17 @@ Rails.application.routes.draw do
   end
 
   # Routes for videos
-  resources :videos, only: [:create, :index, :show, :update, :destroy]
+  # Routes for videos
+  resources :videos, only: [:index, :show, :create, :update, :destroy] do
+    resources :comments, only: [:index, :create, :update, :destroy]
+  end
 
-  # Routes for comments
-  resources :comments, only: [:create, :index, :show, :update, :destroy]
 
   # Routes for questions (if needed)
   # resources :questions, only: [:index, :show]
 
   # Custom routes for audio and video questions
-  get '/audio_questions', to: 'questions#audio_questions'
-  get '/video_questions', to: 'questions#video_questions'
+  resources :questions, only: [:index]
   get "/current_user", to:"users#current_user"
 
   post "/auth/login", to:"session#login"
