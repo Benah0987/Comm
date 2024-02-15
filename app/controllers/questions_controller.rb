@@ -1,8 +1,8 @@
 class QuestionsController < ApplicationController
-  # GET /questions?question_type=audio
+  # GET /questions
   def index
-    question_type = params[:question_type]
-    @questions = question_type.present? ? Question.where(question_type: question_type) : Question.all
+    category = params[:category]
+    @questions = category.present? ? Question.where(category: category) : Question.all
     render json: @questions
   end
 end
