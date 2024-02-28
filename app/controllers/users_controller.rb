@@ -3,25 +3,39 @@ class UsersController < ApplicationController
   
     # Get current logged-in user
     def current_user
-      user = User.includes(videos: :comments).find_by(id: session[:user_id])
+      token = request.headers['Authorization']&.split(' ')&.last
   
-      if user
-        render json: user, include: { videos: { include: :comments } }
-      else
-        render json: { error: "Not logged in" }, status: :not_found
+      if token.nil?
+        render json: { error: "No token provided" }, status: :unauthorized
+        return
+      end
+  
+      begin
+        decoded_token = JWT.decode(token, '45678', true, algorithm: 'HS256')
+        user_id = decoded_token.first['user_id']
+        user = User.includes(videos: :comments).find_by(id: user_id)
+        
+        if user
+          render json: user, include: { videos: { include: :comments } }
+        else
+          render json: { error: "User not found" }, status: :not_found
+        end
+      rescue JWT::DecodeError => e
+        render json: { error: "Invalid token" }, status: :unauthorized
       end
     end
+    
   
     # Get all users
     def index
       users = User.all
-      render json: users, include: :reviews
+      render json: users, include: :comments
     end
   
     # Get user by id
     def show
-      user = User.includes(:reviews).find_by(id: params[:id])
-      render json: user, include: :reviews
+      user = User.includes(:comments).find_by(id: params[:id])
+      render json: user, include: :comments
     end
   
     # Create new user
