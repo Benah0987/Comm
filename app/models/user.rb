@@ -1,6 +1,7 @@
 class User < ApplicationRecord
     has_many :videos
     has_many :comments
+    
 
     # validations 
     has_secure_password

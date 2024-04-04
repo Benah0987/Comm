@@ -9,8 +9,8 @@ class SessionController < ApplicationController
     user = User.find_by(email: email)
    
     if user && user.authenticate(password)
-      # Encode the user's ID into the token
-      token = encode_token({ user_id: user.id })
+      # Encode the user's ID into the token with 1 hour expiry
+      token = encode_token({ user_id: user.id, exp: 1.hour.from_now.to_i })
       render json: { token: token }
     else
       render json: { error: "Wrong email address/password" }, status: :unauthorized
@@ -22,5 +22,4 @@ class SessionController < ApplicationController
   def encode_token(payload)
     JWT.encode(payload, '45678', 'HS256')
   end
-  
 end

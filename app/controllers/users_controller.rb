@@ -39,6 +39,31 @@ class UsersController < ApplicationController
     end
   
     # Create new user
+    def current_user
+      token = request.headers['Authorization']&.split(' ')&.last
+  
+      if token.nil?
+        render json: { error: "No token provided" }, status: :unauthorized
+        return
+      end
+  
+      begin
+        decoded_token = JWT.decode(token, '45678', true, algorithm: 'HS256')
+        user_id = decoded_token.first['user_id']
+        user = User.includes(videos: :comments).find_by(id: user_id)
+        
+        if user
+          render json: user, include: { videos: { include: :comments } }
+        else
+          render json: { error: "User not found" }, status: :not_found
+        end
+      rescue JWT::ExpiredSignature
+        render json: { error: "Session has expired. Please log in again." }, status: :unauthorized
+      rescue JWT::DecodeError => e
+        render json: { error: "Invalid token" }, status: :unauthorized
+      end
+    end
+
     def create
       if @current_user
         render json: { error: "You are already logged in" }, status: :unprocessable_entity

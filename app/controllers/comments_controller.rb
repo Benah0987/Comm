@@ -1,11 +1,13 @@
+# comments_controller.rb
+
 class CommentsController < ApplicationController
   before_action :set_video
-  # before_action :set_comment, only: [:show, :update, :destroy]
+  before_action :set_comment, only: [:show, :update, :destroy]
 
   # GET /videos/:video_id/comments
   def index
-    @comments = @video.comments
-    render json: @comments
+    @comments = @video.comments.includes(:user)
+    render json: @comments.as_json(include: { user: { only: [:id, :name] } })
   end
 
   # GET /videos/:video_id/comments/:id
@@ -15,7 +17,6 @@ class CommentsController < ApplicationController
 
   # POST /videos/:video_id/comments
   def create
-    # Build a new comment associated with the current user and the video
     @comment = @video.comments.build(comment_params.merge(user_id: @current_user.id))
 
     if @comment.save
@@ -24,7 +25,6 @@ class CommentsController < ApplicationController
       render json: @comment.errors, status: :unprocessable_entity
     end
   end
-
 
   # PATCH/PUT /videos/:video_id/comments/:id
   def update
@@ -42,17 +42,19 @@ class CommentsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_video
-      @video = Video.find(params[:video_id])
-    end
 
-    def set_comment
-      @comment = @video.comments.find(params[:id])
+  def set_video
+    @video = Video.find_by(id: params[:video_id])
+    unless @video
+      render json: { error: "Video not found" }, status: :not_found
     end
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def comment_params
-      params.permit(:content)
-    end
+  def set_comment
+    @comment = @video.comments.find(params[:id])
+  end
+
+  def comment_params
+    params.permit(:content)
+  end
 end
