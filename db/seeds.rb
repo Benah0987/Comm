@@ -172,7 +172,63 @@ questions_data = [
       "Use recording and reviewing techniques to improve your comfort and confidence over time."
     ],
     question_type: "video"
-  }
+  },
+  {
+    category: "Introduction and Icebreakers",
+    questions: [
+      "Can you tell me a little about yourself?",
+      "What sparked your interest in this role/company?",
+      "Describe a recent accomplishment you're proud of."
+    ],
+    question_type: "interview quiz"
+  },
+
+  {
+    category: "Skills and Experience Assessment",
+    questions: [
+      "Walk me through your resume.",
+      "How does your experience align with the requirements of this role?",
+      "Can you provide an example of how you've applied [specific skill] in your previous role?"
+    ],
+    question_type: "interview quiz"
+  },
+  {
+    category: "Behavioral Questions",
+    questions: [
+      "Tell me about a time when you had to deal with a difficult coworker. How did you handle it?",
+      "Describe a situation where you had to meet a tight deadline. How did you prioritize your tasks?",
+      "Can you give an example of a challenge you faced and how you overcame it?"
+    ],
+    question_type: "interview quiz"
+  },
+  {
+    category: "Company and Role Fit",
+    questions: [
+      "What do you know about our company and our products/services?",
+      "How do you see yourself contributing to the success of our team?",
+      "Why are you interested in working for our company specifically?"
+    ],
+    question_type: "interview quiz"
+  },
+  {
+    category: "Future Plans and Growth",
+    questions: [
+      "Where do you see yourself in the next 5 years?",
+      "How do you plan to continue your professional development?",
+      "What are your long-term career goals?"
+    ],
+    question_type: "interview quiz"
+  },
+  
+  
+  
+  
+    
+
+  
+  
+  
+ 
 ]
 
 # Seed the questions into the database
