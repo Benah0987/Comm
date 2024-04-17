@@ -44,7 +44,7 @@ gem "bootsnap", require: false
 
 gem 'rack-cors'
 gem 'jwt'
-
+gem 'pg'
 
 
 # Use Sass to process CSS

@@ -10,6 +10,7 @@ default: &default
   timeout: 5000
 
 development:
+  url: postgresql://comm_db_user:o8yE6OP1OxsVIc10irZQnIR3GPYrPLKL@dpg-codv3f0l5elc73fv4g70-a.oregon-postgres.render.com/comm_db
   <<: *default
   database: db/development.sqlite3
 
